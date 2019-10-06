@@ -1,7 +1,7 @@
 {
     "name": "use-deferred",
     "description": "React hook to handle the deferred promise.",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "repository": "https://github.com/skt-t1-byungi/use-deferred.git",
     "author": "skt-t1-byungi <tiniwz@gmail.com>",
     "main": "dist/index.js",
@@ -15,7 +15,7 @@
     ],
     "scripts": {
         "build": "npm run clean && tsc",
-        "clean": "rm -rf dist",
+        "clean": "rm -f index.js index.d.ts tsconfig.tsbuildinfo",
         "test": "ava",
         "prepublishOnly": "npm run test && npm run build"
     },
