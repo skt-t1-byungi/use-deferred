@@ -12,20 +12,22 @@ export class ForceCancelError extends Error {
     isForceCanceled = true
 }
 
-interface UseDeferredOptions<Args extends [], Result> {
+interface UseDeferredOptions<Result, Args extends [] > {
     onExecute: (...args: Args) => void;
     onResolve: (value: Result) => void;
-    onReject: (reason: any) => void;
+    onReject: (reason?: any) => void;
     onComplete: () => void;
 }
 
-export function useDeferred <Args extends [] = [], Result = any> (
+export default useDeferred
+
+export function useDeferred <Result = any, Args extends [] = []> (
     {
         onExecute = noop,
         onResolve = noop,
         onReject = noop,
         onComplete = noop
-    }: Partial<UseDeferredOptions<Args, Result>> = {},
+    }: Partial<UseDeferredOptions<Result, Args>> = {},
     deps: any[] = []
 ) {
     const [state, setState] = useState<STATE>(STATE_BEFORE)
@@ -48,18 +50,18 @@ export function useDeferred <Args extends [] = [], Result = any> (
             return (deferRef.current = pDefer()).promise
         },
 
-        resolve (res: Result) {
+        resolve (value: Result) {
             setState(STATE_RESOLVED)
-            onResolve(res)
+            onResolve(value)
             onComplete()
 
             if (deferRef.current) {
-                deferRef.current.resolve(res)
+                deferRef.current.resolve(value)
                 deferRef.current = null
             }
         },
 
-        reject (reason: any) {
+        reject (reason?: any) {
             setState(STATE_REJECTED)
             onReject(reason)
             onComplete()

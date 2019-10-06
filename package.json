@@ -1,13 +1,30 @@
 {
     "name": "use-deferred",
+    "description": "React hook to handle the deferred promise",
     "version": "0.0.1",
+    "repository": "https://github.com/skt-t1-byungi/use-deferred.git",
+    "author": "skt-t1-byungi <tiniwz@gmail.com>",
     "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "keywords": ["react", "hook", "promise", "defer", "deferred"],
+    "scripts": {
+        "build": "npm run clean && tsc",
+        "clean": "rm -rf dist",
+        "test": "ava",
+        "prepublishOnly": "npm run test && npm run build"
+    },
+    "files": [
+        "dist"
+    ],
     "license": "MIT",
     "devDependencies": {
+        "@testing-library/react-hooks": "^2.0.3",
         "@types/react": "^16.9.5",
+        "ava": "^2.4.0",
         "eslint": "^6.5.1",
         "eslint-config-byungi": "^0.7.3",
         "react": "^16.10.2",
+        "react-test-renderer": "^16.10.2",
         "ts-node": "^8.4.1",
         "typescript": "^3.6.3"
     },
@@ -20,6 +37,9 @@
     "eslintConfig": {
         "extends": "byungi/typescriptreact"
     },
+    "eslintIgnore": [
+        "dist"
+    ],
     "ava": {
         "compileEnhancements": false,
         "extensions": [
