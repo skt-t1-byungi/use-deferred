@@ -1,6 +1,9 @@
 # use-deferred
 React hook to handle the deferred promise.
 
+[![npm](https://flat.badgen.net/npm/v/use-deferred)](https://www.npmjs.com/package/use-deferred)
+[![license](https://flat.badgen.net/github/license/skt-t1-byungi/use-deferred)](https://github.com/skt-t1-byungi/use-deferred/blob/master/LICENSE)
+
 ## Install
 ```sh
 npm i use-deferred
@@ -12,13 +15,15 @@ import useDeferred from 'ues-deferred'
 
 function App(){
     const {execute, resolve, isPending} = useDeferred()
-    return (
-        <>
-            <A execute={execute}/>
-            {isPending && <B resolve={resolve} />}
-        </>)
-}
 
+    return (
+        <div>
+            <A execute={execute} />
+            {isPending && <B resolve={resolve} />}
+        </div>)
+}
+```
+```js
 function A({execute}){
 
     async function onClick(){
@@ -28,7 +33,8 @@ function A({execute}){
 
     /****/
 }
-
+```
+```js
 function B({resolve}){
 
     function onClick(){
