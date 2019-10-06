@@ -14,12 +14,12 @@ npm i use-deferred
 import useDeferred from 'ues-deferred'
 
 function App(){
-    const {execute, resolve, isPending} = useDeferred()
+    const {execute, resolve, reject, isPending} = useDeferred()
 
     return (
         <div>
             <A execute={execute} />
-            {isPending && <B resolve={resolve} />}
+            {isPending && <B resolve={resolve} reject={reject} />}
         </div>)
 }
 ```
@@ -27,7 +27,11 @@ function App(){
 function A({execute}){
 
     async function onClick(){
-        const result = await execute()
+        try {
+            const result = await execute()
+        } catch (err) {
+            if (err.isClosed) return
+        }
         /****/
     }
 
@@ -35,12 +39,15 @@ function A({execute}){
 }
 ```
 ```js
-function B({resolve}){
+function B({resolve, reject}){
 
-    function onClick(){
+    function onEnter(){
         resolve(inputRef.current.value)
     }
 
+    function onClose(){
+        reject({ isClosed: true })
+    }
     /****/
 }
 ```

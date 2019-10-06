@@ -13,16 +13,16 @@ export class ForceCancelError extends Error {
 }
 
 interface UseDeferredHandlers<Result, Args extends [] > {
-    onExecute: (...args: Args) => void;
-    onResolve: (value: Result) => void;
-    onReject: (reason?: any) => void;
-    onComplete: () => void;
+    onExecute?: (...args: Args) => void;
+    onResolve?: (value: Result) => void;
+    onReject?: (reason?: any) => void;
+    onComplete?: () => void;
 }
 
 export default useDeferred
 
 export function useDeferred <Result = any, Args extends [] = []> (
-    handlers: Partial<UseDeferredHandlers<Result, Args>> = {}
+    handlers: UseDeferredHandlers<Result, Args> = {}
 ) {
     const [state, setState] = useState<STATE>(STATE_BEFORE)
     const deferRef = useRef<Deferred<Result>|null>(null)
