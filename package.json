@@ -16,7 +16,7 @@
     "scripts": {
         "build": "npm run clean && tsc",
         "clean": "rm -f index.js index.d.ts tsconfig.tsbuildinfo",
-        "test": "ava",
+        "test": "yarn clean && ava",
         "prepublishOnly": "npm run test && npm run build"
     },
     "files": [

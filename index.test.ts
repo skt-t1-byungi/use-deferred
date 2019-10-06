@@ -51,7 +51,7 @@ test('If forceExecute, the previous defer is canceled', async t => {
     await p
 })
 
-test.only('Handlers should be replaced immediately.', t => {
+test('Handlers should be replaced immediately.', t => {
     let capture!: string
 
     const { result, rerender } = renderHook(({ str, resolve }) => {
