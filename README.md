@@ -129,7 +129,7 @@ function App(){
         await forceExecute()
         // => true
         // => true
-        // => 'Cancel for forced new execution.'
+        // => 'Canceled by forced execution.'
     }
 
     /* ... */

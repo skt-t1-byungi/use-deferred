@@ -21,9 +21,7 @@ interface UseDeferredHandlers<Result, Args extends [] > {
 
 export default useDeferred
 
-export function useDeferred <Result = any, Args extends [] = []> (
-    handlers: UseDeferredHandlers<Result, Args> = {}
-) {
+export function useDeferred <Result = any, Args extends [] = []> (handlers: UseDeferredHandlers<Result, Args> = {}) {
     const [state, setState] = useState<STATE>(STATE_BEFORE)
     const deferRef = useRef<Deferred<Result>|null>(null)
     const handlersRef = useRef(handlers)
@@ -39,7 +37,7 @@ export function useDeferred <Result = any, Args extends [] = []> (
             setState(STATE_PENDING)
 
             if (handlersRef.current.onExecute) handlersRef.current.onExecute(...args)
-            if (deferRef.current) deferRef.current.reject(new ForceCancelError('Cancel for forced new execution.'))
+            if (deferRef.current) deferRef.current.reject(new ForceCancelError('Canceled by forced execution.'))
 
             return (deferRef.current = pDefer()).promise
         },
