@@ -20,8 +20,8 @@
         "prepublishOnly": "npm run test && npm run build"
     },
     "files": [
-        "dist/*.js",
-        "dist/*.d.ts"
+        "index.js",
+        "index.d.ts"
     ],
     "license": "MIT",
     "devDependencies": {
