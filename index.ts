@@ -26,7 +26,7 @@ export function useDeferred <Result = any, Args extends [] = []> (handlers: UseD
     const deferRef = useRef<Deferred<Result>|null>(null)
     const handlersRef = useRef(handlers)
 
-    useLayoutEffect(() => { handlersRef.current = handlers })
+    handlersRef.current = handlers
 
     const methods = useMemo(() => ({
         execute (...args: Args) {
