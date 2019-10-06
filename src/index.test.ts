@@ -10,7 +10,7 @@ test('change defer state', t => {
     t.false(result.current.isResolved)
     t.false(result.current.isRejected)
 
-    act(() => result.current.execute())
+    act(() => { result.current.execute() })
     t.false(result.current.isBefore)
     t.true(result.current.isPending)
     t.false(result.current.isComplete)
@@ -24,7 +24,7 @@ test('change defer state', t => {
     t.true(result.current.isResolved)
     t.false(result.current.isRejected)
 
-    act(() => result.current.execute().catch(() => {}))
+    act(() => { result.current.execute().catch(() => {}) })
     t.false(result.current.isBefore)
     t.true(result.current.isPending)
     t.false(result.current.isComplete)
