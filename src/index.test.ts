@@ -1,4 +1,4 @@
-import test from 'ava'
+import { serial as test } from 'ava'
 import { renderHook, act } from '@testing-library/react-hooks'
 import { useDeferred } from '.'
 
@@ -37,4 +37,14 @@ test('change defer state', t => {
     t.true(result.current.isComplete)
     t.false(result.current.isResolved)
     t.true(result.current.isRejected)
+})
+
+test('If forceExecute, the previous defer is canceled', async t => {
+    const { result } = renderHook(() => useDeferred())
+
+    const p = t.throwsAsync(() => act(() => result.current.execute()))
+    t.true(result.current.isPending)
+
+    act(() => { result.current.forceExecute() })
+    await p
 })

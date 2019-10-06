@@ -32,10 +32,11 @@ function A({execute}){
         } catch (err) {
             if (err.isClosed) return
         }
-        /****/
+
+        /* ... */
     }
 
-    /****/
+    /* ... */
 }
 ```
 ```js
@@ -48,7 +49,8 @@ function B({resolve, reject}){
     function onClose(){
         reject({ isClosed: true })
     }
-    /****/
+
+    /* ... */
 }
 ```
 
@@ -130,7 +132,7 @@ function App(){
         // => 'Cancel for forced new execution.'
     }
 
-    /****/
+    /* ... */
 }
 ```
 
