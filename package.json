@@ -1,0 +1,32 @@
+{
+    "name": "use-deferred",
+    "version": "0.0.1",
+    "main": "dist/index.js",
+    "license": "MIT",
+    "devDependencies": {
+        "@types/react": "^16.9.5",
+        "eslint": "^6.5.1",
+        "eslint-config-byungi": "^0.7.3",
+        "react": "^16.10.2",
+        "ts-node": "^8.4.1",
+        "typescript": "^3.6.3"
+    },
+    "dependencies": {
+        "@byungi/p-defer": "^0.1.1"
+    },
+    "peerDependencies": {
+        "react": "^16.10.2"
+    },
+    "eslintConfig": {
+        "extends": "byungi/typescriptreact"
+    },
+    "ava": {
+        "compileEnhancements": false,
+        "extensions": [
+            "ts"
+        ],
+        "require": [
+            "ts-node/register"
+        ]
+    }
+}
