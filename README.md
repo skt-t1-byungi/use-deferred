@@ -42,7 +42,7 @@ function A({execute}){
 ```js
 function B({resolve, reject}){
 
-    function onEnter(){
+    function onSubmit(){
         resolve(inputRef.current.value)
     }
 

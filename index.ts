@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo } from 'react'
 import pDefer, { Deferred } from '@byungi/p-defer'
-import { STATE, BEFORE, PENDING, RESOLVED, REJECTED } from './state'
+import { State, BEFORE, PENDING, RESOLVED, REJECTED } from './state'
 
 export class ForceCancelError extends Error {
     name = 'ForceCancelError'
@@ -17,7 +17,7 @@ interface UseDeferredHandlers<Result, Args extends [] > {
 export default useDeferred
 
 export function useDeferred <Result = any, Args extends [] = []> (handlers: UseDeferredHandlers<Result, Args> = {}) {
-    const [state, setState] = useState<STATE>(BEFORE)
+    const [state, setState] = useState<State>(BEFORE)
     const deferRef = useRef<Deferred<Result>|null>(null)
     const handlersRef = useRef(handlers)
 
