@@ -85,8 +85,9 @@ Properties for the current state.
 - `isResolved`
 - `isRejected`
 - `isComplete`
+- `state`
 
-##### Example
+##### Example #1
 ```js
 const { execute, isBefore, isPending } = useDeferred()
 
@@ -98,6 +99,20 @@ execute()
 // => isPending: false
 // => isBefore: false
 // => isPending: true
+```
+
+##### Example #2
+```js
+import { BEFORE, PENDING } from 'use-deferred/state'
+
+const { execute, state } = useDeferred()
+
+if(state === BEFORE) console.log('current state: BEFORE')
+if(state === PENDING) console.log('current state: PENDING')
+
+execute()
+// => current state: BEFORE
+// => current state: PENDING
 ```
 
 ### defer.execute(...args)

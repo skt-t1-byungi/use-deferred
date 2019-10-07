@@ -15,13 +15,13 @@
     ],
     "scripts": {
         "build": "npm run clean && tsc",
-        "clean": "rm -f index.js index.d.ts tsconfig.tsbuildinfo",
+        "clean": "rm -f *.js *.d.ts tsconfig.tsbuildinfo",
         "test": "yarn clean && ava",
         "prepublishOnly": "npm run test && npm run build"
     },
     "files": [
-        "index.js",
-        "index.d.ts"
+        "*.js",
+        "*.d.ts"
     ],
     "license": "MIT",
     "devDependencies": {
@@ -45,8 +45,8 @@
         "extends": "byungi/typescriptreact"
     },
     "eslintIgnore": [
-        "index.js",
-        "index.d.ts"
+        "*.js",
+        "*.d.ts"
     ],
     "ava": {
         "compileEnhancements": false,
