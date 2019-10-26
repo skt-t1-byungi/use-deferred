@@ -11,7 +11,7 @@ npm i use-deferred
 
 ## Example
 ```jsx
-import useDeferred from 'ues-deferred'
+import useDeferred from 'use-deferred'
 
 function App(){
     const {execute, resolve, reject, isPending} = useDeferred()
@@ -29,6 +29,8 @@ function A({execute}){
     async function onClick(){
         try {
             const result = await execute()
+
+            /* ... */
         } catch (err) {
             if (err.isClosed) return
         }
