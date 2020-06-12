@@ -1,6 +1,7 @@
-import { useState, useRef, useMemo } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import pDefer, { Deferred } from '@byungi/p-defer'
-import { State, BEFORE, PENDING, RESOLVED, REJECTED } from './state'
+
+import { BEFORE, PENDING, REJECTED, RESOLVED, State } from './state'
 
 export class ForceCancelError extends Error {
     name = 'ForceCancelError'

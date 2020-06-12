@@ -1,5 +1,5 @@
 node_modules/
-tsconfig.tsbuildinfo
+dist/
 *.js
 *.d.ts
 *.lock

@@ -1,13 +1,9 @@
 {
     "compilerOptions": {
-        "incremental": true,
         "lib": ["esnext"],
         "target": "es5",
         "module": "commonjs",
-        "declaration": true,
-        "strict": true
-    },
-    "files": [
-        "index.ts"
-    ]
+        "strict": true,
+        "declaration": true
+    }
 }
