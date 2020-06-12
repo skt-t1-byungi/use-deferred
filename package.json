@@ -16,7 +16,7 @@
     "scripts": {
         "build": "npm run clean && tsc -p tsconfig.prod.json",
         "clean": "rm -rf dist",
-        "test": "yarn clean && ava",
+        "test": "jest",
         "prepublishOnly": "npm run test && npm run build"
     },
     "files": [
@@ -26,13 +26,14 @@
     "license": "MIT",
     "devDependencies": {
         "@testing-library/react-hooks": "^3.3.0",
+        "@types/jest": "^26.0.0",
         "@types/react": "^16",
-        "ava": "^3.8.2",
         "eslint": "^7.2.0",
         "eslint-config-byungi": "^0.12.2",
+        "jest": "^26.0.1",
         "react": "^16",
         "react-test-renderer": "^16",
-        "ts-node": "^8.10.2",
+        "ts-jest": "^26.1.0",
         "typescript": "^3.9.5"
     },
     "dependencies": {
@@ -43,18 +44,5 @@
     },
     "eslintConfig": {
         "extends": "byungi/typescriptreact"
-    },
-    "eslintIgnore": [
-        "*.js",
-        "*.d.ts"
-    ],
-    "ava": {
-        "compileEnhancements": false,
-        "extensions": [
-            "ts"
-        ],
-        "require": [
-            "ts-node/register"
-        ]
     }
 }

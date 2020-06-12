@@ -1,57 +1,56 @@
-import { serial as test } from 'ava'
-import { renderHook, act } from '@testing-library/react-hooks'
+import { act, renderHook } from '@testing-library/react-hooks'
+
 import { useDeferred } from '.'
 
 function noop () {}
 
-test('change defer state', t => {
+test('change defer state', () => {
     const { result } = renderHook(() => useDeferred())
-    t.true(result.current.isBefore)
-    t.false(result.current.isPending)
-    t.false(result.current.isComplete)
-    t.false(result.current.isResolved)
-    t.false(result.current.isRejected)
+    expect(result.current.isBefore).toBe(true)
+    expect(result.current.isPending).toBe(false)
+    expect(result.current.isComplete).toBe(false)
+    expect(result.current.isResolved).toBe(false)
+    expect(result.current.isRejected).toBe(false)
 
     act(() => { result.current.execute() })
-    t.false(result.current.isBefore)
-    t.true(result.current.isPending)
-    t.false(result.current.isComplete)
-    t.false(result.current.isResolved)
-    t.false(result.current.isRejected)
+    expect(result.current.isBefore).toBe(false)
+    expect(result.current.isPending).toBe(true)
+    expect(result.current.isComplete).toBe(false)
+    expect(result.current.isResolved).toBe(false)
+    expect(result.current.isRejected).toBe(false)
 
     act(() => result.current.resolve('resolve'))
-    t.false(result.current.isBefore)
-    t.false(result.current.isPending)
-    t.true(result.current.isComplete)
-    t.true(result.current.isResolved)
-    t.false(result.current.isRejected)
+    expect(result.current.isBefore).toBe(false)
+    expect(result.current.isPending).toBe(false)
+    expect(result.current.isComplete).toBe(true)
+    expect(result.current.isResolved).toBe(true)
+    expect(result.current.isRejected).toBe(false)
 
     act(() => { result.current.execute().catch(noop) })
-    t.false(result.current.isBefore)
-    t.true(result.current.isPending)
-    t.false(result.current.isComplete)
-    t.false(result.current.isResolved)
-    t.false(result.current.isRejected)
+    expect(result.current.isBefore).toBe(false)
+    expect(result.current.isPending).toBe(true)
+    expect(result.current.isComplete).toBe(false)
+    expect(result.current.isResolved).toBe(false)
+    expect(result.current.isRejected).toBe(false)
 
     act(() => result.current.reject())
-    t.false(result.current.isBefore)
-    t.false(result.current.isPending)
-    t.true(result.current.isComplete)
-    t.false(result.current.isResolved)
-    t.true(result.current.isRejected)
+    expect(result.current.isBefore).toBe(false)
+    expect(result.current.isPending).toBe(false)
+    expect(result.current.isComplete).toBe(true)
+    expect(result.current.isResolved).toBe(false)
+    expect(result.current.isRejected).toBe(true)
 })
 
-test('If forceExecute, the previous defer is canceled', async t => {
+test('If forceExecute, the previous defer is canceled', async () => {
     const { result } = renderHook(() => useDeferred())
-
-    const p = t.throwsAsync(() => act(() => result.current.execute()))
-    t.true(result.current.isPending)
-
+    let p:Promise<void>
+    act(() => { p = result.current.execute() })
+    expect(result.current.isPending).toBe(true)
     act(() => { result.current.forceExecute() })
-    await p
+    await expect(p!).rejects.toThrow('Canceled by forced execution.')
 })
 
-test('Handlers should be replaced immediately.', t => {
+test('Handlers should be replaced immediately.', () => {
     let capture!: string
 
     const { result, rerender } = renderHook(({ str, resolve }) => {
@@ -67,10 +66,10 @@ test('Handlers should be replaced immediately.', t => {
         initialProps: { str: 'hello', resolve: false }
     })
 
-    t.falsy(capture)
+    expect(capture).toBeFalsy()
     act(() => { result.current.execute() })
-    t.is(capture, 'hello')
+    expect(capture).toBe('hello')
 
     rerender({ str: 'world', resolve: true })
-    t.is(capture, 'world')
+    expect(capture).toBe('world')
 })
