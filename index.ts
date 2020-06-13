@@ -1,5 +1,4 @@
 import { useMemo, useRef, useState } from 'react'
-import pDefer, { Deferred } from '@byungi/p-defer'
 
 import { BEFORE, PENDING, REJECTED, RESOLVED, State } from './state'
 
@@ -8,7 +7,13 @@ export class ForceCancelError extends Error {
     isForceCanceled = true
 }
 
-interface UseDeferredHandlers<Result, Args extends any[] > {
+interface Deferred<T> {
+    resolve: (value?: T|PromiseLike<T>) => void
+    reject: (reason?: any) => void,
+    promise: Promise<T>
+}
+
+interface UseDeferredHandlers<Result, Args extends any[]>{
     onExecute?: (...args: Args) => void;
     onResolve?: (value: Result) => void;
     onReject?: (reason?: any) => void;
@@ -35,7 +40,13 @@ export function useDeferred <Result = any, Args extends any[] = []> (handlers: U
             if (handlersRef.current.onExecute) handlersRef.current.onExecute(...args)
             if (deferRef.current) deferRef.current.reject(new ForceCancelError('Canceled by forced execution.'))
 
-            return (deferRef.current = pDefer()).promise
+            const defer:Deferred<Result> = {} as any
+            defer.promise = new Promise((resolve, reject) => {
+                defer.resolve = resolve
+                defer.reject = reject
+            })
+
+            return (deferRef.current = defer).promise
         },
 
         resolve (value: Result) {

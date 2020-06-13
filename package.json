@@ -16,7 +16,7 @@
     "scripts": {
         "build": "npm run clean && tsc -p tsconfig.prod.json",
         "clean": "rm -rf dist",
-        "test": "jest",
+        "test": "yarn clean && jest",
         "prepublishOnly": "npm run test && npm run build"
     },
     "files": [
@@ -34,9 +34,6 @@
         "react-test-renderer": "^16",
         "ts-jest": "^26.1.0",
         "typescript": "^3.9.5"
-    },
-    "dependencies": {
-        "@byungi/p-defer": "^0.2.0"
     },
     "peerDependencies": {
         "react": "^16"
