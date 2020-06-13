@@ -17,18 +17,22 @@ function App(){
     const {execute, resolve, reject, isPending} = useDeferred()
 
     return (
-        <div>
-            <Page showPopup={execute} />
-            {isPending && <Popup onComplete={resolve} onClose={() => reject({ isClosed: true })} />}
-        </div>)
+        <>
+            <Page openPopup={execute} />
+            {isPending && (
+                <Popup
+                    onComplete={resolve}
+                    onClose={() => reject({ isClosed: true })}
+                />)}
+        </>)
 }
 ```
 ```js
-function Page({ showPopup }){
+function Page({ openPopup }){
 
     async function onBtnClick(){
         try {
-            const popupResult = await showPopup()
+            const popupResult = await openPopup()
 
             /* ... */
         } catch (err) {
@@ -44,11 +48,12 @@ function Page({ showPopup }){
 ```js
 function Popup({ onComplete, onClose }){
 
-    function onCompleteClick(){
-        onComplete(inputRef.current.value)
+    function handleComplete(){
+        const popupResult = inputRef.current.value
+        onComplete(popupResult)
     }
 
-    function onCloseClick(){
+    function handleClose(){
         onClose()
     }
 
