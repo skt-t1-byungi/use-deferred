@@ -18,17 +18,17 @@ function App(){
 
     return (
         <div>
-            <A execute={execute} />
-            {isPending && <B resolve={resolve} reject={reject} />}
+            <Page showPopup={execute} />
+            {isPending && <Popup onComplete={resolve} onClose={() => reject({ isClosed: true })} />}
         </div>)
 }
 ```
 ```js
-function A({execute}){
+function Page({ showPopup }){
 
-    async function onClick(){
+    async function onBtnClick(){
         try {
-            const result = await execute()
+            const popupResult = await showPopup()
 
             /* ... */
         } catch (err) {
@@ -42,14 +42,14 @@ function A({execute}){
 }
 ```
 ```js
-function B({resolve, reject}){
+function Popup({ onComplete, onClose }){
 
-    function onSubmit(){
-        resolve(inputRef.current.value)
+    function onCompleteClick(){
+        onComplete(inputRef.current.value)
     }
 
-    function onClose(){
-        reject({ isClosed: true })
+    function onCloseClick(){
+        onClose()
     }
 
     /* ... */
@@ -143,18 +143,18 @@ function App(){
         try {
             await execute()
         } catch(err) {
-            console.log(err.isForceCanceled)
-            console.log(err instanceof ForceCancelError)
-            console.log(err.toString())
+            console.log('1. ' + err.isForceCanceled)
+            console.log('2. ' + err instanceof ForceCancelError)
+            console.log('3. ' + err.toString())
         }
     }
 
     // Second.
     async function onForceExecClick(){
         await forceExecute()
-        // => true
-        // => true
-        // => 'Canceled by forced execution.'
+        // => 1. true
+        // => 2. true
+        // => 3. 'Canceled by forced execution.'
     }
 
     /* ... */
