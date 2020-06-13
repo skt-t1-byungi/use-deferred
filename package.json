@@ -1,7 +1,7 @@
 {
     "name": "use-deferred",
     "description": "React hook to handle the deferred promise.",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "repository": "https://github.com/skt-t1-byungi/use-deferred.git",
     "author": "skt-t1-byungi <tiniwz@gmail.com>",
     "main": "dist/index.js",
