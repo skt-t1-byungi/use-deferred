@@ -30,7 +30,7 @@ function App(){
 ```js
 function Page({ openPopup }){
 
-    async function onBtnClick(){
+    async function handleBtnClick(){
         try {
             const popupResult = await openPopup()
 
@@ -50,6 +50,7 @@ function Popup({ onComplete, onClose }){
 
     function handleComplete(){
         const popupResult = inputRef.current.value
+
         onComplete(popupResult)
     }
 
@@ -66,7 +67,7 @@ function Popup({ onComplete, onClose }){
 Returns an object to handle the deferred promise.
 
 #### handlers
-Handler called when deferred state changes.
+Handler called when state changes.
 
 - `onExecute(...args)`
 - `onComplete()`
@@ -99,14 +100,14 @@ Properties for the current state.
 function App(){
     const { execute, isBefore, isPending } = useDeferred()
 
-    console.log(`isBefore: ${isBefore}`)
-    console.log(`isPending: ${isPending}`)
+    console.log(`isBefore: ${isBefore}`) // => isBefore: true
+    console.log(`isPending: ${isPending}`) // => isPending: false
 
-    execute()
-    // => isBefore: true
-    // => isPending: false
-    // => isBefore: false
-    // => isPending: true
+    useEffect(() => {
+        execute()
+        // => isBefore: false
+        // => isPending: true
+    }, [])
 
     /* ... */
 }
@@ -119,12 +120,14 @@ import { BEFORE, PENDING } from 'use-deferred/state'
 function App(){
     const { execute, state } = useDeferred()
 
-    if(state === BEFORE) console.log('current state: BEFORE')
+    if(state === BEFORE) console.log(`current state: BEFORE`)
     if(state === PENDING) console.log('current state: PENDING')
-
-    execute()
     // => current state: BEFORE
-    // => current state: PENDING
+
+    useEffect(() => {
+        execute()
+        // => current state: PENDING
+    }, [])
 
     /* ... */
 }
