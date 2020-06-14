@@ -94,6 +94,10 @@ Properties for the current state.
 - `isRejected`
 - `isComplete`
 - `state`
+    - `BEFORE`
+    - `PENDING`
+    - `RESOLVED`
+    - `REJECTED`
 
 ##### Example #1
 ```js
