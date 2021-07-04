@@ -57,13 +57,11 @@ export function useDeferred<Result = void, Args extends any[] = []>(handlers: Ha
                 deferRef.current.resolve(value)
                 deferRef.current = null
 
-                const { onResolve, onComplete } = handlersRef.current
-                if (onResolve || onComplete) {
-                    Promise.resolve(value).then(value => {
-                        onResolve?.(value)
-                        onComplete?.()
-                    })
-                }
+                Promise.resolve(value).then(value => {
+                    const { onResolve, onComplete } = handlersRef.current
+                    onResolve?.(value)
+                    onComplete?.()
+                })
             },
 
             reject(reason?: any) {
@@ -73,8 +71,9 @@ export function useDeferred<Result = void, Args extends any[] = []>(handlers: Ha
                 deferRef.current.reject(reason)
                 deferRef.current = null
 
-                handlersRef.current.onReject?.(reason)
-                handlersRef.current.onComplete?.()
+                const { onReject, onComplete } = handlersRef.current
+                onReject?.(reason)
+                onComplete?.()
             },
         }),
         []
