@@ -7,13 +7,13 @@ export class ForceCancelError extends Error {
     isForceCanceled = true
 }
 
-interface Deferred<T> {
-    resolve: (value?: T | PromiseLike<T>) => void
+interface Defer<T> {
+    resolve: (value: T | PromiseLike<T>) => void
     reject: (reason?: any) => void
     promise: Promise<T>
 }
 
-interface UseDeferredHandlers<Result, Args extends any[]> {
+interface Handlers<Result, Args extends any[]> {
     onExecute?: (...args: Args) => void
     onResolve?: (value: Result) => void
     onReject?: (reason?: any) => void
@@ -22,9 +22,9 @@ interface UseDeferredHandlers<Result, Args extends any[]> {
 
 export default useDeferred
 
-export function useDeferred<Result = any, Args extends any[] = []>(handlers: UseDeferredHandlers<Result, Args> = {}) {
+export function useDeferred<Result = any, Args extends any[] = []>(handlers: Handlers<Result, Args> = {}) {
     const [state, setState] = useState<State>(BEFORE)
-    const deferRef = useRef<Deferred<Result> | null>(null)
+    const deferRef = useRef<Defer<Result> | null>(null)
     const handlersRef = useRef(handlers)
 
     handlersRef.current = handlers
@@ -41,7 +41,7 @@ export function useDeferred<Result = any, Args extends any[] = []>(handlers: Use
                 if (handlersRef.current.onExecute) handlersRef.current.onExecute(...args)
                 if (deferRef.current) deferRef.current.reject(new ForceCancelError('Canceled by forced execution.'))
 
-                const defer: Deferred<Result> = {} as any
+                const defer: Defer<Result> = {} as any
                 defer.promise = new Promise((resolve, reject) => {
                     defer.resolve = resolve
                     defer.reject = reject
