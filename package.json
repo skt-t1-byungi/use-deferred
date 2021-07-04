@@ -16,7 +16,8 @@
     "scripts": {
         "build": "npm run clean && tsc -p tsconfig.prod.json",
         "clean": "rm -rf dist",
-        "test": "yarn clean && jest",
+        "test": "jest",
+        "testw": "jest --watchAll",
         "prepublishOnly": "npm run test && npm run build"
     },
     "files": [

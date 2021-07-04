@@ -22,7 +22,7 @@ interface Handlers<Result, Args extends any[]> {
 
 export default useDeferred
 
-export function useDeferred<Result = any, Args extends any[] = []>(handlers: Handlers<Result, Args> = {}) {
+export function useDeferred<Result = void, Args extends any[] = []>(handlers: Handlers<Result, Args> = {}) {
     const [state, setState] = useState<State>(BEFORE)
     const deferRef = useRef<Defer<Result> | null>(null)
     const handlersRef = useRef(handlers)
@@ -38,8 +38,8 @@ export function useDeferred<Result = any, Args extends any[] = []>(handlers: Han
             forceExecute(...args: Args) {
                 setState(PENDING)
 
-                if (handlersRef.current.onExecute) handlersRef.current.onExecute(...args)
-                if (deferRef.current) deferRef.current.reject(new ForceCancelError('Canceled by forced execution.'))
+                handlersRef.current.onExecute?.(...args)
+                deferRef.current?.reject(new ForceCancelError('Canceled by forced execution.'))
 
                 const defer: Defer<Result> = {} as any
                 defer.promise = new Promise((resolve, reject) => {
@@ -54,24 +54,27 @@ export function useDeferred<Result = any, Args extends any[] = []>(handlers: Han
                 if (!deferRef.current) return
 
                 setState(RESOLVED)
-
-                if (handlersRef.current.onResolve) handlersRef.current.onResolve(value)
-                if (handlersRef.current.onComplete) handlersRef.current.onComplete()
-
                 deferRef.current.resolve(value)
                 deferRef.current = null
+
+                const { onResolve, onComplete } = handlersRef.current
+                if (onResolve || onComplete) {
+                    Promise.resolve(value).then(value => {
+                        onResolve?.(value)
+                        onComplete?.()
+                    })
+                }
             },
 
             reject(reason?: any) {
                 if (!deferRef.current) return
 
                 setState(REJECTED)
-
-                if (handlersRef.current.onReject) handlersRef.current.onReject(reason)
-                if (handlersRef.current.onComplete) handlersRef.current.onComplete()
-
                 deferRef.current.reject(reason)
                 deferRef.current = null
+
+                handlersRef.current.onReject?.(reason)
+                handlersRef.current.onComplete?.()
             },
         }),
         []
